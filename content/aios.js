@@ -203,12 +203,13 @@ function aios_initSidebar() {
     /*document.getElementById('sidebar').addProgressListener(aiosSBListener, Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT);*/
 
     // BrowserFullScreen erweitern (Verhalten der Sidebar, Sidebar-Switch, usw.)
-    var fx_BrowserFullScreen = BrowserFullScreen;
-    BrowserFullScreen = function() {
-        //if(!window.fullScreen) fx_maximizedWindow = fx_mainWindow.getAttribute('sizemode') == "maximized";
-        fx_BrowserFullScreen();
-        aios_BrowserFullScreen();
-    };
+    var fx_windowFullscreen = window.fullScreen;
+    window.addEventListener("sizemodechange", function(event) {
+        if (window.fullScreen != fx_windowFullscreen) {
+            fx_windowFullscreen = window.fullScreen;
+            aios_BrowserFullScreen();
+        }
+    });
     
     // Drag&Drop-Funktion fuer den Sidebar-Umschalter deaktivieren?
     try {
